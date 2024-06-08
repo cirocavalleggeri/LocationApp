@@ -58,7 +58,8 @@ fun LocationDisplay(locationUtils: LocationUtils,
                       context: Context){
     val messaggio= remember { mutableStateOf("")  }
     val location=viewModel.location.value
-
+    val address=location?.let { locationUtils.reverseGeoCodeLocation(location) }
+    //val address=locationUtils.reverseGeoCodeLocation(location!!)
     val requestPermissionLauncher= rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestMultiplePermissions() ,
         onResult ={permissions->
@@ -100,7 +101,8 @@ fun LocationDisplay(locationUtils: LocationUtils,
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center){
         if(location!=null){
-            Text(text = "Posizione gps ${location.latitude} ${location.longitude}")
+            Text(text = "Posizione gps ${location.latitude} ${location.longitude} \n " +
+                    "Indirizzo : $address")
         }else{ Text(text ="Posizione gps non disponibile")}
 
         Button(onClick = {
